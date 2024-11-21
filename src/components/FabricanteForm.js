@@ -2,7 +2,14 @@
 
 import React, { useState } from 'react';
 
-const FabricanteForm = () => {
+const InputField = ({ label, type, name, value, onChange }) => (
+    <div className="form-group">
+        <label>{label}:</label>
+        <input type={type} name={name} value={value} onChange={onChange} />
+    </div>
+);
+
+const FabricanteForm = ({ onNextStep }) => {
     const [formData, setFormData] = useState({
         nome: '',
         cpfCnpj: '',
@@ -20,21 +27,40 @@ const FabricanteForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
     const handleFileChange = (e) => {
-        setFormData({ ...formData, logotipo: e.target.files[0] });
+        setFormData((prevState) => ({ ...prevState, logotipo: e.target.files[0] }));
+    };
+
+    const handleClearLogo = () => {
+        setFormData((prevState) => ({ ...prevState, logotipo: null }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Enviar os dados para o backend (exemplo)
-        console.log('Dados do fabricante:', formData);
+        console.log('Dados do Fabricante:', formData);
+
+        // Simula o envio dos dados e avança para a próxima etapa
+        onNextStep('obra'); // Passa para a próxima etapa (dados da obra)
     };
 
-    const handleClearLogo = () => {
-        setFormData({ ...formData, logotipo: null });
+    const handleCancel = () => {
+        setFormData({
+            nome: '',
+            cpfCnpj: '',
+            endereco: '',
+            numero: '',
+            bairro: '',
+            cidade: '',
+            estado: '',
+            cep: '',
+            telefone: '',
+            celular: '',
+            email: '',
+            logotipo: null,
+        });
     };
 
     return (
@@ -51,121 +77,99 @@ const FabricanteForm = () => {
                         </div>
                     )}
                 </div>
-                
-                <div className="form-group">
-                    <label>Nome do Fabricante:</label>
-                    <input
-                        type="text"
-                        name="nome"
-                        value={formData.nome}
-                        onChange={handleChange}
-                    />
-                </div>
-                
-                <div className="form-group">
-                    <label>CPF ou CNPJ:</label>
-                    <input
-                        type="text"
-                        name="cpfCnpj"
-                        value={formData.cpfCnpj}
-                        onChange={handleChange}
-                    />
-                </div>
 
-                <div className="form-group">
-                    <label>Endereço:</label>
-                    <input
-                        type="text"
-                        name="endereco"
-                        value={formData.endereco}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Nome do Fabricante"
+                    type="text"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Número:</label>
-                    <input
-                        type="text"
-                        name="numero"
-                        value={formData.numero}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="CPF ou CNPJ"
+                    type="text"
+                    name="cpfCnpj"
+                    value={formData.cpfCnpj}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Bairro:</label>
-                    <input
-                        type="text"
-                        name="bairro"
-                        value={formData.bairro}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Endereço"
+                    type="text"
+                    name="endereco"
+                    value={formData.endereco}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Cidade:</label>
-                    <input
-                        type="text"
-                        name="cidade"
-                        value={formData.cidade}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Número"
+                    type="text"
+                    name="numero"
+                    value={formData.numero}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Estado:</label>
-                    <input
-                        type="text"
-                        name="estado"
-                        value={formData.estado}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Bairro"
+                    type="text"
+                    name="bairro"
+                    value={formData.bairro}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>CEP:</label>
-                    <input
-                        type="text"
-                        name="cep"
-                        value={formData.cep}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Cidade"
+                    type="text"
+                    name="cidade"
+                    value={formData.cidade}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Telefone:</label>
-                    <input
-                        type="text"
-                        name="telefone"
-                        value={formData.telefone}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Estado"
+                    type="text"
+                    name="estado"
+                    value={formData.estado}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>Celular:</label>
-                    <input
-                        type="text"
-                        name="celular"
-                        value={formData.celular}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="CEP"
+                    type="text"
+                    name="cep"
+                    value={formData.cep}
+                    onChange={handleChange}
+                />
 
-                <div className="form-group">
-                    <label>E-mail:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
+                <InputField
+                    label="Telefone"
+                    type="text"
+                    name="telefone"
+                    value={formData.telefone}
+                    onChange={handleChange}
+                />
 
-                <button type="submit">Confirmar</button>
-                <button type="button" onClick={() => setFormData({
-                    nome: '', cpfCnpj: '', endereco: '', numero: '', bairro: '', cidade: '', estado: '', cep: '', telefone: '', celular: '', email: '', logotipo: null
-                })}>Cancelar</button>
+                <InputField
+                    label="Celular"
+                    type="text"
+                    name="celular"
+                    value={formData.celular}
+                    onChange={handleChange}
+                />
+
+                <InputField
+                    label="E-mail"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                />
+
+                <div className="form-actions">
+                    <button type="submit">Confirmar</button>
+                    <button type="button" onClick={handleCancel}>Cancelar</button>
+                </div>
             </form>
         </div>
     );

@@ -1,22 +1,7 @@
-// src/components/TelasSoldadas.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const TelasSoldadas = () => {
-    const [telas, setTelas] = useState([
-        { designacao: 'L113', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 3.8, diametroTransv: 3.8, secaoLong: 1.13, secaoTransv: 0.38 },
-        { designacao: 'L138', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 4.2, diametroTransv: 4.2, secaoLong: 1.38, secaoTransv: 0.46 },
-        { designacao: 'L159', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 4.5, diametroTransv: 4.5, secaoLong: 1.59, secaoTransv: 0.53 },
-        { designacao: 'L196', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 5.0, diametroTransv: 5.0, secaoLong: 1.96, secaoTransv: 0.65 },
-        { designacao: 'L246', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 5.6, diametroTransv: 5.6, secaoLong: 2.46, secaoTransv: 0.82 },
-        { designacao: 'L283', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 6.0, diametroTransv: 6.0, secaoLong: 2.83, secaoTransv: 0.94 },
-        { designacao: 'L335', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 6.3, diametroTransv: 6.3, secaoLong: 3.35, secaoTransv: 0.94 },
-        { designacao: 'L396', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 7.0, diametroTransv: 7.0, secaoLong: 3.96, secaoTransv: 0.96 },
-        { designacao: 'L503', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 8.0, diametroTransv: 8.0, secaoLong: 5.03, secaoTransv: 0.96 },
-        { designacao: 'L636', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 9.0, diametroTransv: 9.0, secaoLong: 6.36, secaoTransv: 0.96 },
-        { designacao: 'L785', espacamentoLong: 10, espacamentoTransv: 30, diametroLong: 10.0, diametroTransv: 6.0, secaoLong: 7.85, secaoTransv: 0.94 }
-    ]);
-
+    const [telas, setTelas] = useState([]);
     const [newTela, setNewTela] = useState({
         designacao: '',
         espacamentoLong: '',
@@ -27,23 +12,56 @@ const TelasSoldadas = () => {
         secaoTransv: ''
     });
 
+    // Função para buscar telas do backend
+    const fetchTelas = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/telasSoldadas');
+            const data = await response.json();
+            setTelas(data);
+        } catch (error) {
+            console.error('Erro ao buscar telas:', error);
+        }
+    };
+
+    // Carregar as telas ao montar o componente
+    useEffect(() => {
+        fetchTelas();
+    }, []);
+
+    // Atualizar o estado do formulário
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewTela({ ...newTela, [name]: value });
     };
 
-    const handleAddTela = (e) => {
+    // Adicionar uma nova tela
+    const handleAddTela = async (e) => {
         e.preventDefault();
-        setTelas([...telas, newTela]);
-        setNewTela({
-            designacao: '',
-            espacamentoLong: '',
-            espacamentoTransv: '',
-            diametroLong: '',
-            diametroTransv: '',
-            secaoLong: '',
-            secaoTransv: ''
-        });
+        try {
+            const response = await fetch('http://localhost:5000/api/telasSoldadas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTela)
+            });
+
+            if (response.ok) {
+                const addedTela = await response.json();
+                setTelas([...telas, addedTela]); // Atualizar a lista de telas no frontend
+                setNewTela({
+                    designacao: '',
+                    espacamentoLong: '',
+                    espacamentoTransv: '',
+                    diametroLong: '',
+                    diametroTransv: '',
+                    secaoLong: '',
+                    secaoTransv: ''
+                });
+            } else {
+                console.error('Erro ao adicionar a nova tela.');
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+        }
     };
 
     return (

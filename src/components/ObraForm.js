@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const ObraForm = () => {
+const ObraForm = ({ onNextStep }) => {
     const [formData, setFormData] = useState({
         especificacao: '',
         endereco: '',
@@ -20,8 +20,23 @@ const ObraForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Enviar os dados para o backend (exemplo)
+        // Enviar os dados para o backend ou processá-los
         console.log('Dados da obra:', formData);
+
+        // Passar para a próxima etapa (dados do cliente)
+        onNextStep('cliente');
+    };
+
+    const handleCancel = () => {
+        setFormData({
+            especificacao: '',
+            endereco: '',
+            numero: '',
+            bairro: '',
+            cidade: '',
+            estado: '',
+            cep: '',
+        });
     };
 
     return (
@@ -98,10 +113,10 @@ const ObraForm = () => {
                     />
                 </div>
 
-                <button type="submit">Confirmar</button>
-                <button type="button" onClick={() => setFormData({
-                    especificacao: '', endereco: '', numero: '', bairro: '', cidade: '', estado: '', cep: ''
-                })}>Cancelar</button>
+                <div className="form-actions">
+                    <button type="submit">Confirmar</button>
+                    <button type="button" onClick={handleCancel}>Cancelar</button>
+                </div>
             </form>
         </div>
     );

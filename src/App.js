@@ -19,47 +19,29 @@ function App() {
     // Função para lidar com a lógica de cálculo
     const handleCalcular = () => {
         console.log('Iniciando o cálculo...');
-
-        // Lógica para coletar dados e processar cálculos aqui
-        // Coletar dados dos componentes de formulário (exemplo)
-        const formData = {}; // Supondo que você usará um estado global ou outra abordagem para coletar dados
-
         alert('Cálculo realizado com sucesso!');
     };
 
-    // Função para renderizar o formulário ativo
-    const renderActiveForm = () => {
-        switch (activeForm) {
-            case 'fabricante':
-                return <FabricanteForm />;
-            case 'obra':
-                return <ObraForm />;
-            case 'cliente':
-                return <ClienteForm />;
-            case 'telasSoldadas':
-                return <TelasSoldadas />;
-            case 'geometria':
-                return <GeometriaForm />;
-            case 'instalacaoManuseio':
-                return <InstalacaoManuseioForm />;
-            case 'sobrecarga':
-                return <SobrecargaForm />;
-            case 'armadura':
-                return <ArmaduraForm />;
-            case 'criterioConstantes':
-                return <CriterioConstantesForm />;
-            default:
-                return <FabricanteForm />;
-        }
+    // Mapeamento dinâmico dos formulários
+    const forms = {
+        fabricante: <FabricanteForm onNextStep={setActiveForm} />,
+        obra: <ObraForm onNextStep={setActiveForm} />,
+        cliente: <ClienteForm onNextStep={setActiveForm} />,
+        telasSoldadas: <TelasSoldadas onNextStep={setActiveForm} />,
+        geometria: <GeometriaForm onNextStep={setActiveForm} />,
+        instalacaoManuseio: <InstalacaoManuseioForm onNextStep={setActiveForm} />,
+        sobrecarga: <SobrecargaForm onNextStep={setActiveForm} />,
+        armadura: <ArmaduraForm onNextStep={setActiveForm} />,
+        criterioConstantes: <CriterioConstantesForm onNextStep={setActiveForm} />,
     };
 
     return (
         <div className="App">
+            {/* MenuBar recebe setActiveForm para permitir navegação */}
             <MenuBar onCalcular={handleCalcular} setActiveForm={setActiveForm} />
             <div className="content">
-                <h1></h1>
-                {/* Renderizando o formulário ativo com base no estado */}
-                {renderActiveForm()}
+                {/* Renderização dinâmica do formulário com base no estado activeForm */}
+                {forms[activeForm]}
             </div>
         </div>
     );
