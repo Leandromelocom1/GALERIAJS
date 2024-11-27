@@ -1,6 +1,5 @@
-// src/App.js
-
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MenuBar from './components/MenuBar';
 import FabricanteForm from './components/FabricanteForm';
 import ObraForm from './components/ObraForm';
@@ -13,37 +12,33 @@ import ArmaduraForm from './components/ArmaduraForm';
 import CriterioConstantesForm from './components/CriterioConstantesForm';
 
 function App() {
-    // Estado para controlar a exibição dos formulários
-    const [activeForm, setActiveForm] = useState('fabricante');
-
     // Função para lidar com a lógica de cálculo
     const handleCalcular = () => {
         console.log('Iniciando o cálculo...');
         alert('Cálculo realizado com sucesso!');
     };
 
-    // Mapeamento dinâmico dos formulários
-    const forms = {
-        fabricante: <FabricanteForm onNextStep={setActiveForm} />,
-        obra: <ObraForm onNextStep={setActiveForm} />,
-        cliente: <ClienteForm onNextStep={setActiveForm} />,
-        telasSoldadas: <TelasSoldadas onNextStep={setActiveForm} />,
-        geometria: <GeometriaForm onNextStep={setActiveForm} />,
-        instalacaoManuseio: <InstalacaoManuseioForm onNextStep={setActiveForm} />,
-        sobrecarga: <SobrecargaForm onNextStep={setActiveForm} />,
-        armadura: <ArmaduraForm onNextStep={setActiveForm} />,
-        criterioConstantes: <CriterioConstantesForm onNextStep={setActiveForm} />,
-    };
-
     return (
-        <div className="App">
-            {/* MenuBar recebe setActiveForm para permitir navegação */}
-            <MenuBar onCalcular={handleCalcular} setActiveForm={setActiveForm} />
-            <div className="content">
-                {/* Renderização dinâmica do formulário com base no estado activeForm */}
-                {forms[activeForm]}
+        <Router>
+            <div className="App">
+                {/* MenuBar para navegação global e lógica de cálculo */}
+                <MenuBar onCalcular={handleCalcular} />
+                <div className="content">
+                    <Routes>
+                        {/* Rotas para cada componente do processo */}
+                        <Route path="/" element={<FabricanteForm />} />
+                        <Route path="/obra" element={<ObraForm />} />
+                        <Route path="/cliente" element={<ClienteForm />} />
+                        <Route path="/telas-soldadas" element={<TelasSoldadas />} />
+                        <Route path="/geometria" element={<GeometriaForm />} />
+                        <Route path="/instalacao-manuseio" element={<InstalacaoManuseioForm />} />
+                        <Route path="/sobrecarga" element={<SobrecargaForm />} />
+                        <Route path="/armadura" element={<ArmaduraForm />} />
+                        <Route path="/criterio-constantes" element={<CriterioConstantesForm />} />
+                    </Routes>
+                </div>
             </div>
-        </div>
+        </Router>
     );
 }
 

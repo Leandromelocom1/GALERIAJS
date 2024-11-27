@@ -1,6 +1,5 @@
-// src/components/ClienteForm.js
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ClienteForm = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +15,8 @@ const ClienteForm = () => {
         email: '',
     });
 
+    const navigate = useNavigate(); // Hook para redirecionar
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -23,8 +24,11 @@ const ClienteForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Enviar os dados para o backend (exemplo)
+        // Simular envio dos dados ao backend
         console.log('Dados do cliente:', formData);
+
+        // Redirecionar para a tela de Telas Soldadas
+        navigate('/telas-soldadas');
     };
 
     return (
@@ -132,9 +136,25 @@ const ClienteForm = () => {
                 </div>
 
                 <button type="submit">Confirmar</button>
-                <button type="button" onClick={() => setFormData({
-                    nome: '', endereco: '', numero: '', bairro: '', cidade: '', estado: '', cep: '', telefone: '', celular: '', email: ''
-                })}>Cancelar</button>
+                <button
+                    type="button"
+                    onClick={() =>
+                        setFormData({
+                            nome: '',
+                            endereco: '',
+                            numero: '',
+                            bairro: '',
+                            cidade: '',
+                            estado: '',
+                            cep: '',
+                            telefone: '',
+                            celular: '',
+                            email: '',
+                        })
+                    }
+                >
+                    Cancelar
+                </button>
             </form>
         </div>
     );

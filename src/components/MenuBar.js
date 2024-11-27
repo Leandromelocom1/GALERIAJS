@@ -1,22 +1,21 @@
-// src/components/MenuBar.js
-
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const MenuBar = ({ onCalcular, setActiveForm }) => {
+const MenuBar = ({ onCalcular }) => {
+    const navigate = useNavigate(); // Hook para navegação programática
+
     return (
         <div className="menu-bar">
-            <button onClick={() => setActiveForm('fabricante')}>Dados do Fabricante</button>
-            <button onClick={() => setActiveForm('obra')}>Dados da Obra</button>
-            <button onClick={() => setActiveForm('cliente')}>Dados do Cliente</button>
-            <button onClick={() => setActiveForm('telasSoldadas')}>Telas Soldadas</button>
-            <button onClick={() => setActiveForm('geometria')}>Geometria</button>
-            <button onClick={() => setActiveForm('instalacaoManuseio')}>Instalação e Manuseio</button>
-            <button onClick={() => setActiveForm('sobrecarga')}>Sobrecarga</button>
-            <button onClick={() => setActiveForm('armadura')}>Armadura</button>
-            <button onClick={() => setActiveForm('criterioConstantes')}>Critério e Constantes</button>
-            <button className="calcular-button" onClick={onCalcular}>
-                <img src="path/to/calculating-icon.png" alt="Calcular" /> Calcular
-            </button>
+            <button onClick={() => navigate('/')}>Fabricante</button>
+            <button onClick={() => navigate('/obra')}>Obra</button>
+            <button onClick={() => navigate('/cliente')}>Cliente</button>
+            <button onClick={() => navigate('/telas-soldadas')}>Telas Soldadas</button>
+            <button onClick={() => navigate('/geometria')}>Geometria</button>
+            <button onClick={() => navigate('/instalacao-manuseio')}>Instalação & Manuseio</button>
+            <button onClick={() => navigate('/sobrecarga')}>Sobrecarga</button>
+            <button onClick={() => navigate('/armadura')}>Armadura</button>
+            <button onClick={() => navigate('/criterio-constantes')}>Critérios & Constantes</button>
+            <button onClick={onCalcular}>Calcular</button>
         </div>
     );
 };
