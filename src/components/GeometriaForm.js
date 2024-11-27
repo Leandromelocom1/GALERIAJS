@@ -170,4 +170,4 @@ const GeometriaForm = () => {
     );
 };
 
-export default GeometriaForm;,.
+export default GeometriaForm;
